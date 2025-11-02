@@ -1,0 +1,5 @@
+{
+  "name": "AI Code Corrector",
+  "description": "An intelligent code editor that uses the Gemini API to find, highlight, and correct mistakes in your code. Submit your code, get instant feedback with highlighted errors and suggested fixes, and apply the corrections with a single click.",
+  "requestFramePermissions": []
+}
