@@ -87,3 +87,45 @@ ${cssCode}
     throw new Error("An unknown error occurred while correcting code.");
   }
 };
+
+
+export const getChatResponse = async (htmlCode: string, cssCode: string, query: string): Promise<string> => {
+  if (!process.env.API_KEY) {
+    throw new Error("API_KEY environment variable not set");
+  }
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+    const prompt = `
+You are an expert web development assistant. Your role is to answer questions and provide explanations about the user's code.
+Given the following HTML and CSS, please answer the user's question concisely. Format your response using Markdown for readability.
+
+HTML Code:
+\`\`\`html
+${htmlCode}
+\`\`\`
+
+CSS Code:
+\`\`\`css
+${cssCode}
+\`\`\`
+
+User's Question: "${query}"
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash", 
+      contents: prompt,
+    });
+    
+    return response.text;
+
+  } catch (error) {
+    console.error("Error calling Gemini API for chat:", error);
+    if (error instanceof Error) {
+        throw new Error(`Failed to get chat response: ${error.message}`);
+    }
+    throw new Error("An unknown error occurred during chat.");
+  }
+};

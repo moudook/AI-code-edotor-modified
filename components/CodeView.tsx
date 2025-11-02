@@ -7,6 +7,8 @@ interface CodeViewProps {
   diff: Correction[] | null;
   isLoading: boolean;
   placeholder: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const DiffLine: React.FC<{ line: Correction }> = ({ line }) => {
@@ -15,19 +17,19 @@ const DiffLine: React.FC<{ line: Correction }> = ({ line }) => {
       <>
         <div className="flex text-sm font-mono">
           <div className="flex-shrink-0 w-12 text-right pr-4 text-red-400 opacity-50">{line.lineNumber}</div>
-          <div className="flex-grow pl-2 pr-4 bg-red-500 bg-opacity-10 border-l-2 border-red-500">
+          <div className="flex-grow pl-2 pr-4 bg-red-900/20 border-l-2 border-red-500">
             <span className="text-red-400 mr-2">-</span>
-            <span className="text-gray-400 whitespace-pre-wrap">{line.original}</span>
+            <span className="text-zinc-400 whitespace-pre-wrap">{line.original}</span>
           </div>
         </div>
         <div className="flex text-sm font-mono mt-1">
           <div className="flex-shrink-0 w-12 text-right pr-4 text-green-400 opacity-50"></div>
-          <div className="flex-grow pl-2 pr-4 bg-green-500 bg-opacity-10 border-l-2 border-green-500">
+          <div className="flex-grow pl-2 pr-4 bg-green-900/20 border-l-2 border-green-500">
             <span className="text-green-400 mr-2">+</span>
-            <span className="text-gray-100 whitespace-pre-wrap">{line.corrected}</span>
+            <span className="text-zinc-200 whitespace-pre-wrap">{line.corrected}</span>
           </div>
         </div>
-        <div className="flex text-xs font-sans text-yellow-500 my-2">
+        <div className="flex text-xs font-sans text-zinc-400 my-2">
             <div className="flex-shrink-0 w-12"></div>
             <div className="flex-grow pl-3 pr-4">
                 <span className="font-bold">Explanation:</span> {line.explanation}
@@ -39,15 +41,15 @@ const DiffLine: React.FC<{ line: Correction }> = ({ line }) => {
 
   return (
     <div className="flex text-sm font-mono">
-      <div className="flex-shrink-0 w-12 text-right pr-4 text-gray-500">{line.lineNumber}</div>
+      <div className="flex-shrink-0 w-12 text-right pr-4 text-zinc-500">{line.lineNumber}</div>
       <div className="flex-grow pl-3 pr-4">
-        <span className="text-gray-300 whitespace-pre-wrap">{line.original}</span>
+        <span className="text-zinc-200 whitespace-pre-wrap">{line.original}</span>
       </div>
     </div>
   );
 };
 
-const CodeView: React.FC<CodeViewProps> = ({ code, onCodeChange, diff, isLoading, placeholder }) => {
+const CodeView: React.FC<CodeViewProps> = ({ code, onCodeChange, diff, isLoading, placeholder, onFocus, onBlur }) => {
   if (diff) {
     return (
       <div className="w-full h-full flex flex-col">
@@ -66,8 +68,10 @@ const CodeView: React.FC<CodeViewProps> = ({ code, onCodeChange, diff, isLoading
     <textarea
       value={code}
       onChange={(e) => onCodeChange(e.target.value)}
+      onFocus={onFocus}
+      onBlur={onBlur}
       placeholder={placeholder}
-      className="w-full h-full p-4 font-mono text-sm text-gray-200 bg-transparent resize-none outline-none placeholder:text-gray-500"
+      className="w-full h-full p-4 font-mono text-sm text-zinc-100 bg-transparent resize-none outline-none placeholder:text-zinc-500"
       disabled={isLoading}
     />
   );
